@@ -1,8 +1,8 @@
 function Board(){
 	this.canvas = document.getElementById("canvas");
 	this.ctx = this.canvas.getContext("2d");
-	this.width = 320;
-	this.height = 576;
+	this.width = 10;
+	this.height = 18;
 	this.cellwidth = 32;
 	this.running = true;
 	this.cycle = 0;
@@ -65,31 +65,18 @@ Board.prototype.clear = function(){
 	this.ctx.clearRect(0,0, this.width, this.height);
 }
 Board.prototype.generateGrid = function(){
-	for (var y = 0; y < 18; y++){
-		for (var x = 0; x < 10; x++){
-			tile = this.map[y][x];
-			switch(tile){		
-				case 1:
-					this.drawRect(x*32,y*32, 32, 32, [139,137,137]);
-					break;
-				case 2:
-					this.drawRect(x*32,y*32, 32, 32, [49,79,79]);
-					break;
-				case 3: 
-					this.drawRect(x*32,y*32, 32, 32, [255,105,180]);
-					break;
-				default:
-					this.drawRect(x*32,y*32, 32, 32, [255,250,250]);		
-			}		
-		}
+    for (var y = 0; y < 18; y++){
+	for (var x = 0; x < 10; x++){
+	    tile = this.map[y][x];
+	    switch(tile){		
+	    case 1: this.ctx.fillStyle = 'rgb(139, 137, 137)'; break;
+	    case 2: this.ctx.fillStyle = 'rgb(49, 79, 79)'; break;
+	    case 3: this.ctx.fillStyle = 'rgb(255, 105, 180)'; break;
+	    default: this.ctx.fillStyle = 'rgb(255, 250, 250)'; break;
+	    }		
+	    this.ctx.fillRect(x,y,1,1);
 	}
-}
-Board.prototype.drawRect = function(x,y,w,h,color){
-	this.ctx.beginPath();
-	this.ctx.fillStyle = 'rgb('+color[0]+', '+color[1]+', '+color[2]+')';
-	this.ctx.rect(x,y,32,32);
-	this.ctx.closePath();
-	this.ctx.fill();
+    }
 }
 Board.prototype.moveActiveDown = function(){
 	if(this.checkCollision(0,1) == false){
@@ -184,7 +171,8 @@ Board.prototype.drawActive = function(){
 	for(var i=0; i < this.tile[0].length; i++){
 		for(var j=this.tile.length-1; j>=0; j--){
 			if(this.tile[j][i] == 1){
-				this.drawRect(this.currentTile[0]*32 + (i*32),this.currentTile[1]*32 + (j*32), 32, 32, [218,112,214]);
+			    this.ctx.fillStyle = 'rgb(218, 112, 214)';
+			    this.ctx.fillRect(this.currentTile[0] + i, this.currentTile[1] + j, 1, 1);
 			}
 		}
 	}
