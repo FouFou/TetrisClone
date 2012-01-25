@@ -29,6 +29,7 @@ var tetris_clone = (function tetris_clone (jaws) {
     // some magic numbers
     var initial_row = 0;
     var initial_col = 4;
+    var frames_per_drop = 10;
 
     return {
 	width : 10,
@@ -85,7 +86,9 @@ var tetris_clone = (function tetris_clone (jaws) {
 	    var cells = this.shapes[this.tile].cells;
 	    cells.push({ row : 0, col : 0}); // center is always there
 	    for (var i in cells) {
-		drawSquare(this.row + cells[i].row, this.col + cells[i].col);
+		drawSquare(this.row + cells[i].row +
+			   (this.cycle / frames_per_drop) - 1, // smoother descent
+			   this.col + cells[i].col);
 	    }
 	},
 	checkCollision : function () {
@@ -209,7 +212,7 @@ var tetris_clone = (function tetris_clone (jaws) {
 	update : function () {
 	    if (this.running) {
 		++this.cycle;
-		if (this.cycle >= 10) {
+		if (this.cycle >= frames_per_drop) {
 		    this.cycle = 0;
 		    this.moveDown();	
 		}
